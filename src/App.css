@@ -1,0 +1,265 @@
+:root {
+  --federal-blue: #03045eff;
+  --marian-blue: #023e8aff;
+  --honolulu-blue: #0077b6ff;
+  --blue-green: #0096c7ff;
+  --pacific-cyan: #00b4d8ff;
+  --vivid-sky-blue: #48cae4ff;
+  --non-photo-blue: #90e0efff;
+  --non-photo-blue-2: #ade8f4ff;
+  --light-cyan: #caf0f8ff;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-VariableFont_slnt,wght.ttf");
+  font-style: normal;
+}
+body {
+  font-family: "Inter";
+  margin: 0;
+  background-color: var(--light-cyan);
+}
+* {
+  box-sizing: border-box;
+}
+a,
+button {
+  cursor: pointer;
+}
+
+/* Login Page Styles */
+
+.login-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 150px;
+}
+.login-page .heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5em;
+  width: 375px;
+}
+.login-page .heading .logo {
+  width: 125px;
+  height: auto;
+}
+.login-page .heading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+.login-page .login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-page .login {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--non-photo-blue);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 11px;
+  padding-bottom: 25px;
+  width: 375px;
+  height: 525px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.login-page .login h2 {
+  font-weight: bold;
+  font-size: 2.5em;
+}
+.login-page .login label {
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+.login-page .login input {
+  background-color: var(--non-photo-blue);
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  padding: 11px;
+  margin-bottom: 40px;
+  width: 275px;
+}
+.login-page .login input::placeholder {
+  color: black;
+}
+.login-page .login button {
+  background-color: var(--pacific-cyan);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 40px;
+  height: 40px;
+  width: 275px;
+}
+.login-page .login button:hover {
+  background-color: var(--blue-green);
+}
+.login-page .login a {
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+.login-page .theme {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: auto;
+  margin: 15px;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--marian-blue);
+    color: white;
+  }
+  .login-page .login {
+    background-color: var(--federal-blue);
+  }
+  .login-page .login input {
+    background-color: var(--federal-blue);
+    border: solid white;
+    color: white;
+  }
+  .login-page .login input::placeholder {
+    color: white;
+  }
+  .login-page .login a {
+    color: white;
+  }
+}
+
+/*   */
+
+/* Register Page Styles */
+.register-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 150px;
+}
+.register-page .heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5em;
+  width: 375px;
+}
+.register-page .heading .logo {
+  width: 125px;
+  height: auto;
+}
+.register-page .heading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+.register-page .register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.register-page .register {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--non-photo-blue);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 11px;
+  padding-bottom: 25px;
+  width: 375px;
+  height: 725px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.register-page .register h2 {
+  font-weight: bold;
+  font-size: 2.5em;
+}
+.register-page .register label {
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+.register-page .register input {
+  background-color: var(--non-photo-blue);
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  padding: 11px;
+  margin-bottom: 40px;
+  width: 275px;
+}
+.register-page .register input::placeholder {
+  color: black;
+}
+.register-page .register button {
+  background-color: var(--pacific-cyan);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 40px;
+  height: 40px;
+  width: 275px;
+}
+.register-page .register button:hover {
+  background-color: var(--blue-green);
+}
+.register-page .register a {
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+.register-page .theme {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: auto;
+  margin: 15px;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--marian-blue);
+    color: white;
+  }
+  .register-page .register {
+    background-color: var(--federal-blue);
+  }
+  .register-page .register input {
+    background-color: var(--federal-blue);
+    border: solid white;
+    color: white;
+  }
+  .register-page .register input::placeholder {
+    color: white;
+  }
+  .register-page .register a {
+    color: white;
+  }
+}
