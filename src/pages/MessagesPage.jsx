@@ -1,14 +1,11 @@
 import Sidebar from "../Sidebar";
-import { useState } from "react";
+import { useSidebar } from "../SidebarContext";
 
 export default function MessagesPage() {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-  const toggleVisibility = () => {
-    setSidebarVisible(!sidebarVisible)
-  }
+  const { sidebarVisible, toggleVisibility } = useSidebar();
   return (
     <div className="messages-page">
-      <Sidebar isVisible={sidebarVisible} setSidebarVisible={setSidebarVisible}/>
+      <Sidebar />
       <section className={`${sidebarVisible ? "section-hidden" : ""}`}>
         <div className="messages-header">
           <button onClick={toggleVisibility}>

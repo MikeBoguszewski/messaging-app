@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
 import MessageRow from "./MessageRow";
+import { useSidebar } from "./SidebarContext";
 
-export default function Sidebar({isVisible, setSidebarVisible}) {
-    const toggleVisibility = () => {
-      setSidebarVisible(!isVisible);
-    };
+export default function Sidebar() {
+  const { sidebarVisible, toggleVisibility } = useSidebar();
   return (
-    <div className={`sidebar ${isVisible ? "visible" : ""}`}>
+    <div className={`sidebar ${sidebarVisible ? "visible" : ""}`}>
       <div className="header">
         <h2>Hello, username</h2>
         <div className="account">
-          <Link>
+          <Link to={"/profile"}>
             <img src="/assets/circle.svg"></img>
           </Link>
           <button>

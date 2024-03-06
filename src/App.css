@@ -252,27 +252,6 @@ p {
   margin: 15px;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-  body {
-    background-color: var(--marian-blue);
-    color: white;
-  }
-  .register-page .register {
-    background-color: var(--federal-blue);
-  }
-  .register-page .register input {
-    background-color: var(--federal-blue);
-    border: solid white;
-    color: white;
-  }
-  .register-page .register input::placeholder {
-    color: white;
-  }
-  .register-page .register a {
-    color: white;
-  }
-}
-
 /* Sidebar Styles */
 .sidebar {
   display: flex;
@@ -345,16 +324,19 @@ p {
 }
 
 /* Messages Page Styles */
-.messages-page {
+.messages-page,
+.profile-page {
   display: flex;
   height: 100vh;
 }
-.messages-page section {
+.messages-page section,
+.profile-page section {
   display: flex;
   flex-direction: column;
   width: 70vw;
 }
-.messages-page .messages-header {
+.messages-page .messages-header,
+.profile-page .profile-header {
   border-bottom: 2px solid black;
   background-color: var(--non-photo-blue-2);
   min-height: 100px;
@@ -363,21 +345,22 @@ p {
   justify-content: space-between;
   align-items: center;
 }
-.messages-page .messages-header h1 {
-  margin: 0px;
+.messages-page .messages-header h1,
+.profile-page .profile-header h1 {
   margin: 0 auto;
   padding: 0px;
 }
-.messages-page .messages-header button {
+.messages-page .messages-header button,
+.profile-page .profile-header button {
   background-color: var(--non-photo-blue-2);
   border: none;
   display: none;
 }
-.messages-page .messages-header button img {
+.messages-page .messages-header button img,
+.profile-page .profile-header button img {
   width: 40px;
   height: auto;
 }
-
 .messages-page .messages {
   display: flex;
   flex-direction: column;
@@ -428,9 +411,41 @@ p {
   background-color: var(--non-photo-blue-2);
   border: none;
 }
+.profile-page .profile-header .profile {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+.profile-page .profile-header .profile img {
+  width: 80px;
+  height: auto;
+}
+.profile-page .description {
+  overflow-y: auto;
+  padding: 50px;
+  font-size: 1.5em;
+}
+.profile-page .profile-header .edit-button {
+  display: inline-block;
+}
+
 @media screen and (prefers-color-scheme: dark) {
   body {
     background-color: var(--marian-blue);
+    color: white;
+  }
+  .register-page .register {
+    background-color: var(--federal-blue);
+  }
+  .register-page .register input {
+    background-color: var(--federal-blue);
+    border: solid white;
+    color: white;
+  }
+  .register-page .register input::placeholder {
+    color: white;
+  }
+  .register-page .register a {
     color: white;
   }
   .sidebar {
@@ -471,14 +486,17 @@ p {
     color: white;
   }
 }
+
 @media screen and (max-width: 1300px) {
   .sidebar {
     display: none;
   }
-  .messages-page section {
+  .messages-page section,
+  .profile-page section {
     width: 100vw;
   }
-  .messages-page .messages-header button {
+  .messages-page .messages-header button,
+  .profile-page .profile-header button {
     display: inline-block;
   }
   .sidebar.visible {
@@ -491,11 +509,9 @@ p {
   .sidebar .users .row .user-info p {
     min-width: 100vw;
   }
-  .messages-page section.section-hidden {
+  .messages-page section.section-hidden,
+  .profile-page section.section-hidden {
     display: none;
-  }
-  .messages-page section .messages-header button {
-    display: inline-block;
   }
 }
 @media screen and (max-width: 768px) {
