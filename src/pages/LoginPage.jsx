@@ -1,30 +1,34 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+
   const onChange = (event, inputName) => {
     setCredentials((prevCredentials) => ({
       ...prevCredentials,
       [inputName]: event.target.value,
     }));
-    console.log(credentials);
   };
 
-  const login = async () => {
+  const login = async (event) => {
+    event.preventDefault();
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(credentials),
       });
       if (response.ok) {
         console.log("Login successful");
+        navigate("/messages");
       } else {
         console.log("Login failed");
       }
