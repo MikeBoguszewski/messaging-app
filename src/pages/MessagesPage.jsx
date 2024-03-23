@@ -6,7 +6,7 @@ export default function MessagesPage() {
   const { sidebarVisible, toggleVisibility } = useSidebar();
   const [conversations, setConversations] = useState([]);
   useEffect(() => {
-    const fetchMessages = async () => {
+    const fetchConversations = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/conversation", {
           method: "GET",
@@ -19,12 +19,13 @@ export default function MessagesPage() {
         console.error("Error fetching data", error);
       }
     };
-    fetchMessages();
+    fetchConversations();
   }, []);
 
   return (
     <div className="messages-page">
-      <Sidebar />
+      <Sidebar/>
+      
       <section className={`${sidebarVisible ? "section-hidden" : ""}`}>
         <div className="messages-header">
           <button onClick={toggleVisibility}>
@@ -35,16 +36,6 @@ export default function MessagesPage() {
         <div className="messages">
           <div className="message sent">Hey man.</div>
           <div className="message received">Yo!</div>
-          <div className="message sent">You got the stuff?</div>
-          <div className="message recieved">Yes!sdfjlsa;fjdjla;sdjf;ljf;dlsajf;dj;lfdja;sldfj;asldjf;aldfsj</div>
-          <div className="message sent">Hey man.</div>
-          <div className="message received">Yo!</div>
-          <div className="message sent">You got the stuff?</div>
-          <div className="message recieved">Yes!sdfjlsa;fjdjla;sdjf;ljf;dlsajf;dj;lfdja;sldfj;asldjf;aldfsj</div>
-          <div className="message sent">Hey man.</div>
-          <div className="message received">Yo!</div>
-          <div className="message sent">You got the stuff?</div>
-          <div className="message recieved">Yes!sdfjlsa;fjdjla;sdjf;ljf;dlsajf;dj;lfdja;sldfj;asldjf;aldfsjes!sdfjlsa;fjdjla;sdjf;ljf;dlsajf;dj;lfdja;sldfj;asldjf;aldfsj</div>
         </div>
         <form className="send-message">
           <textarea name="message" id="messsage" placeholder="Enter Message"></textarea>
