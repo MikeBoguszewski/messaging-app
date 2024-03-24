@@ -5,7 +5,10 @@ export default function ConversationModal() {
   const [selectedParticipants, setSelectedParticipants] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch("http://localhost:3000/api/users");
+      const response = await fetch("http://localhost:3000/api/users", {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await response.json();
       setUsers(data.formattedUsers);
     };
@@ -14,9 +17,9 @@ export default function ConversationModal() {
 
   const handleCheckboxChange = (event, user) => {
     if (event.target.checked) {
-      setSelectedParticipants([...selectedParticipants, user.id]);
+      setSelectedParticipants([...selectedParticipants, user.username]);
     } else {
-      setSelectedParticipants(selectedParticipants.filter((id) => id !== user.id));
+      setSelectedParticipants(selectedParticipants.filter((username) => username !== user.username));
     }
   };
 
@@ -25,6 +28,7 @@ export default function ConversationModal() {
     try {
       const response = await fetch("http://localhost:3000/api/conversation", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -36,7 +40,7 @@ export default function ConversationModal() {
       console.error("Error fetching data", error);
     }
   };
-  
+
   return (
     <div className="modal">
       <form onSubmit={(event) => createConversation(event)}>
@@ -44,7 +48,7 @@ export default function ConversationModal() {
         {users.map((user) => (
           <div key={user._id}>
             <label htmlFor={user._id}>{user.username} </label>
-            <input type="checkbox" id={user.id} onChange={(event) => handleCheckboxChange(event, user)}></input>
+            <input type="checkbox" id={user._id} onChange={(event) => handleCheckboxChange(event, user)}></input>
           </div>
         ))}
         <button type="submit">Start</button>

@@ -286,10 +286,10 @@ p {
   background-color: var(--non-photo-blue);
   border: none;
 }
-.sidebar .users {
+.sidebar .conversations {
   overflow-y: auto;
 }
-.sidebar .users .row {
+.sidebar .conversations .row {
   display: flex;
   align-items: center;
   height: 100px;
@@ -297,24 +297,24 @@ p {
   border-bottom: 1px solid black;
   gap: 5px;
 }
-.sidebar .users .row:hover {
+.sidebar .conversations .row:hover {
   background-color: var(--non-photo-blue-2);
   cursor: pointer;
 }
-.sidebar .users .row .user-info p {
+.sidebar .conversations .row .user-info p {
   max-width: 30vw;
   white-space: wrap;
   text-overflow: ellipsis;
 }
-.sidebar .users .row img {
+.sidebar .conversations .row img {
   width: 60px;
   height: auto;
 }
-.sidebar .users .row .user-info {
+.sidebar .conversations .row .user-info {
   display: flex;
   flex-direction: column;
 }
-.sidebar .users .row .user-info .container {
+.sidebar .conversations .row .user-info .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -477,10 +477,10 @@ p {
     background-color: var(--federal-blue);
   }
   .sidebar .header,
-  .sidebar .users .row {
+  .sidebar .conversations .row {
     border-bottom: 2px solid white;
   }
-  .sidebar .users .row:hover {
+  .sidebar .conversations .row:hover {
     background-color: var(--honolulu-blue);
   }
   .messages-page .messages .message {
@@ -528,7 +528,7 @@ p {
   .sidebar .menu-toggle {
     display: inline-block;
   }
-  .sidebar .users .row .user-info p {
+  .sidebar .conversations .row .user-info p {
     min-width: 100vw;
   }
   .messages-page section.section-hidden,
