@@ -43,7 +43,7 @@ export default function ConversationModal() {
 
   return (
     <div className="modal">
-      <form onSubmit={(event) => createConversation(event)}>
+      <form onSubmit={createConversation}>
         <h2>Start Conversation</h2>
         {users.map((user) => (
           <div key={user._id}>

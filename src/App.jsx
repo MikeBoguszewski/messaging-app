@@ -14,7 +14,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/messages" element={<MessagesPage />} />
+        <Route path="/messages/:conversationId?" element={<MessagesPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </SidebarProvider>

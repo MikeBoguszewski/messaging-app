@@ -18,7 +18,6 @@ export default function Sidebar({username}) {
           });
           const data = await response.json();
           setConversations(data.conversations);
-          console.log(data.conversations)
         } catch (error) {
           console.error("Error fetching data", error);
         }
@@ -63,8 +62,8 @@ export default function Sidebar({username}) {
         </div>
       </div>
       <div className="conversations">
-        {conversations.map((conversation, index) => (
-          <MessageRow key={index} conversation={conversation} loggedInUser={username} />
+        {conversations.map((conversation) => (
+          <MessageRow key={conversation._id} conversation={conversation} loggedInUser={username} />
         ))}
       </div>
     </div>
