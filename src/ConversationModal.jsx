@@ -39,6 +39,7 @@ export default function ConversationModal({ setConversationModal }) {
       });
       if (response.ok) {
         setConversationModal(false);
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error creating conversation", error);

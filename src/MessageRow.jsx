@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 export default function MessageRow({ conversation, loggedInUser }) {
   const filteredParticipants = conversation.participants.filter((username) => username !== loggedInUser);
-  const mostRecentMessage = conversation.messages.sort((a, b) => b.timestamp - a.timestamp)[0];
+  const mostRecentMessage = conversation.messages.map((message) => ({ ...message, timestamp: new Date(message.timestamp) })).sort((a, b) => b.timestamp - a.timestamp)[0];
   return (
     <Link className="row" to={`/messages/${conversation._id}`}>
       <img src="/assets/circle.svg"></img>

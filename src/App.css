@@ -255,8 +255,7 @@ p {
   flex-direction: column;
   box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.25);
   background-color: var(--non-photo-blue);
-  min-width: 400px;
-  max-width: 30vw;
+  width: 30vw;
   height: 100vh;
 }
 .sidebar .header {
@@ -288,6 +287,7 @@ p {
 }
 .sidebar .conversations {
   overflow-y: auto;
+  background-color: var(--non-photo-blue);
 }
 .sidebar .conversations .row {
   display: flex;
@@ -296,6 +296,8 @@ p {
   padding: 10px;
   border-bottom: 1px solid black;
   gap: 5px;
+  text-decoration: none;
+  color: inherit;
 }
 .sidebar .conversations .row:hover {
   background-color: var(--non-photo-blue-2);
@@ -333,7 +335,7 @@ p {
   justify-content: center;
 }
 .sidebar .modal form {
-  background-color: var(--blue-green);
+  background-color: var(--vivid-sky-blue);
   border: 1px solid #888;
   border-radius: 10px;
   min-width: 400px;
@@ -396,7 +398,7 @@ p {
   box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.25);
   border-radius: 0px 20px 20px 20px;
   word-wrap: break-word;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 .messages-page .messages .sent {
   align-self: flex-end;
@@ -473,6 +475,9 @@ p {
   .sidebar {
     background-color: var(--federal-blue);
   }
+  .sidebar .conversations {
+    background-color: var(--federal-blue);
+  }
   .sidebar .account button {
     background-color: var(--federal-blue);
   }
@@ -496,16 +501,21 @@ p {
     border-top: 2px solid white;
   }
   .messages-page .messages-header,
+  .profile-page .profile-header,
   .messages-page .send-message {
     background-color: var(--oceanBlue);
   }
   .messages-page .send-message textarea,
-  .messages-page .send-message button {
+  .messages-page .send-message button,
+  .profile-page .profile-header button {
     background-color: var(--oceanBlue);
   }
   .messages-page .send-message textarea,
   .messages-page .send-message textarea::placeholder {
     color: white;
+  }
+  .sidebar .modal form {
+    background-color: var(--blue-green);
   }
 }
 

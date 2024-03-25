@@ -63,8 +63,12 @@ export default function MessagesPage() {
         body: JSON.stringify({
           sender: username,
           content: newMessage,
+          timestamp: Date.now(),
         }),
       });
+      if (response.ok) {
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Error fetching data", error);
     }
@@ -77,8 +81,7 @@ export default function MessagesPage() {
           <button onClick={toggleVisibility}>
             <img src="/assets/menu.svg"></img>
           </button>
-          <h1>{otherParticipant ? `@${otherParticipant}`: "Select a Conversation!"}</h1>
-          
+          <h1>{otherParticipant ? `@${otherParticipant}` : "Select a Conversation!"}</h1>
         </div>
         <div className="messages">
           {messages.map((message) => (
