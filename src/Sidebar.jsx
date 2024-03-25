@@ -1,29 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MessageRow from "./MessageRow";
-import { useSidebar} from "./SidebarContext";
+import { useSidebar } from "./SidebarContext";
 import ConversationModal from "./ConversationModal";
 
-export default function Sidebar({username}) {
+export default function Sidebar({ username }) {
   const navigate = useNavigate();
   const { sidebarVisible, toggleVisibility } = useSidebar();
   const [conversationModal, setConversationModal] = useState(false);
   const [conversations, setConversations] = useState([]);
-    useEffect(() => {
-      const fetchConversations = async () => {
-        try {
-          const response = await fetch("http://localhost:3000/api/conversation", {
-            method: "GET",
-            credentials: "include",
-          });
-          const data = await response.json();
-          setConversations(data.conversations);
-        } catch (error) {
-          console.error("Error fetching data", error);
-        }
-      };
-      fetchConversations();
-    }, []);
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/conversation", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await response.json();
+        setConversations(data.conversations);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    fetchConversations();
+  }, []);
   const toggleConversationModal = () => {
     setConversationModal((prevModalState) => !prevModalState);
   };
@@ -31,19 +31,19 @@ export default function Sidebar({username}) {
     event.preventDefault();
     try {
       const response = await fetch("http://localhost:3000/api/logout");
-       if (response.ok) {
-         console.log("Logout successful");
-         navigate("/login");
-       } else {
-         console.error("Logout failed:", response.status);
-       }
+      if (response.ok) {
+        console.log("Logout successful");
+        navigate("/login");
+      } else {
+        console.error("Logout failed:", response.status);
+      }
     } catch (error) {
       console.error("Error during logout:", error);
     }
-  }
+  };
   return (
     <div className={`sidebar ${sidebarVisible ? "visible" : ""}`}>
-      {conversationModal && <ConversationModal />}
+      {conversationModal && <ConversationModal setConversationModal={setConversationModal} />}
       <div className="header">
         <h2>Hello, {username}</h2>
         <div className="account">

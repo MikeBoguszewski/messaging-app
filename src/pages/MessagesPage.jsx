@@ -8,9 +8,16 @@ export default function MessagesPage() {
   const [username, setUsername] = useState("");
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [otherParticipant, setOtherParticipant] = useState([])
+  const [otherParticipant, setOtherParticipant] = useState("");
   const { conversationId } = useParams();
+  const [conversationSelected, setConversationSelected] = useState(false);
+
   useEffect(() => {
+    if (conversationId) {
+      setConversationSelected(true);
+    } else {
+      setConversationSelected(false);
+    }
     const fetchUsername = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/user", {
@@ -32,7 +39,7 @@ export default function MessagesPage() {
             credentials: "include",
           });
           const data = await response.json();
-          setOtherParticipants(data.conversation.participants.filter((participant) => participant !== username));
+          setOtherParticipant(data.conversation.participants.find((participant) => participant !== username));
           setMessages(data.conversation.messages);
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -40,7 +47,7 @@ export default function MessagesPage() {
       };
       fetchMessages();
     }
-  }, [conversationId]);
+  }, [conversationId, username]);
   const handleChange = (event) => {
     setNewMessage(event.target.value);
   };
@@ -70,7 +77,8 @@ export default function MessagesPage() {
           <button onClick={toggleVisibility}>
             <img src="/assets/menu.svg"></img>
           </button>
-          <h1>{otherParticipants}</h1>
+          <h1>{otherParticipant ? `@${otherParticipant}`: "Select a Conversation!"}</h1>
+          
         </div>
         <div className="messages">
           {messages.map((message) => (
@@ -79,12 +87,14 @@ export default function MessagesPage() {
             </div>
           ))}
         </div>
-        <form className="send-message" onSubmit={sendMessage}>
-          <textarea name="message" id="messsage" placeholder="Enter Message" value={newMessage} onChange={handleChange}></textarea>
-          <button type="submit">
-            <img src="/assets/send.svg"></img>
-          </button>
-        </form>
+        {conversationSelected && (
+          <form className="send-message" onSubmit={sendMessage}>
+            <textarea name="message" id="messsage" placeholder="Enter Message" value={newMessage} onChange={handleChange}></textarea>
+            <button type="submit">
+              <img src="/assets/send.svg"></img>
+            </button>
+          </form>
+        )}
       </section>
     </div>
   );
