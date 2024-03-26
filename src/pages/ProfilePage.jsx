@@ -1,28 +1,91 @@
 import Sidebar from "../Sidebar";
 import { useSidebar } from "../SidebarContext";
+import { useState, useEffect } from "react";
 
 export default function ProfilePage() {
   const { sidebarVisible, toggleVisibility } = useSidebar();
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState({
+    username: "",
+    description: "",
+    profilePicture: null,
+    profilePictureUrl: "",
+  });
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/user/profile", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await response.json();
+        setProfileData({ ...profileData, username: data.username, description: data.description, profilePictureUrl: data.profilePictureUrl });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchProfileData();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("username", profileData.username);
+      formData.append("description", profileData.description);
+      formData.append("profilePicture", profileData.profilePicture);
+      console.log(profileData);
+      console.log(formData);
+      const response = await fetch("http://localhost:3000/api/user/update-profile", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setProfileData({ ...profileData, profilePictureUrl: data.profilePictureUrl });
+        setIsEditing(false);
+      } else {
+        throw new Error("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error saving profile", error);
+    }
+  };
+
   return (
     <div className="profile-page">
-      <Sidebar />
+      <Sidebar username={profileData.username} />
       <section className={`${sidebarVisible ? "section-hidden" : ""}`}>
         <div className="profile-header">
           <button onClick={toggleVisibility}>
-            <img src="/assets/menu.svg"></img>
+            <img src="/assets/menu.svg" alt="Menu" />
           </button>
           <div className="profile">
-            <img src="/assets/circle.svg"></img>
-            <div className="container">
-              <h1>@Username</h1>
-              <span>United States</span>
-            </div>
+            {isEditing ? (
+              <input type="file" accept="image/*" onChange={(event) => setProfileData({ ...profileData, profilePicture: event.target.files[0] })} />
+            ) : (
+              <img src={profileData.profilePictureUrl || "/assets/circle.svg"} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
+            )}
+            {isEditing ? (
+              <input
+                type="text"
+                value={profileData.username}
+                onChange={(event) => {
+                  setProfileData({ ...profileData, username: event.target.value });
+                }}
+              />
+            ) : (
+              <h1>@{profileData.username}</h1>
+            )}
           </div>
-          <button className="edit-button">
-            <img src="/assets/pencil.svg"></img>
+          <button className="edit-button" onClick={() => setIsEditing(!isEditing)}>
+            <img src="/assets/pencil.svg" alt="Edit" />
           </button>
         </div>
-        <div className="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus eius suscipit officia expedita dolorum reprehenderit nam excepturi ipsa, necessitatibus earum in facilis explicabo beatae enim corporis sequi corrupti perspiciatis facere sunt provident illum atque temporibus. Iste quam distinctio non facilis earum molestiae hic praesentium eaque? Alias recusandae non ad laboriosam.</div>
+        {isEditing ? <textarea value={profileData.description} onChange={(event) => setProfileData({ ...profileData, description: event.target.value })}></textarea> : <div className="description">{profileData.description}</div>}
+
+        {isEditing && <button onClick={handleSave}>Save</button>}
       </section>
     </div>
   );

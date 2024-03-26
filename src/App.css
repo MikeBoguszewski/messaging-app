@@ -491,7 +491,7 @@ p {
   .messages-page .messages .message {
     background-color: var(--honolulu-blue);
   }
-  .messages-page .messages-header {
+  .messages-page .messages-header, .profile-page .profile-header {
     border-bottom: 2px solid white;
   }
   .messages-page .messages-header button {
