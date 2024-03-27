@@ -9,6 +9,7 @@ export default function Sidebar({ username }) {
   const { sidebarVisible, toggleVisibility } = useSidebar();
   const [conversationModal, setConversationModal] = useState(false);
   const [conversations, setConversations] = useState([]);
+  const [profileData, setProfileData] = useState({});
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -23,6 +24,21 @@ export default function Sidebar({ username }) {
       }
     };
     fetchConversations();
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/user/profile", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setProfileData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchProfileData();
   }, []);
   const toggleConversationModal = () => {
     setConversationModal((prevModalState) => !prevModalState);
@@ -48,7 +64,7 @@ export default function Sidebar({ username }) {
         <h2>Hello, {username}</h2>
         <div className="account">
           <Link to={"/profile"}>
-            <img src="/assets/circle.svg"></img>
+            <img src={profileData.profilePictureUrl || "/assets/circle.svg"} alt="Profile" />
           </Link>
           <button>
             <img src="/assets/square-edit-outline.svg" onClick={toggleConversationModal}></img>

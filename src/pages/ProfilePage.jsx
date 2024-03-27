@@ -34,8 +34,6 @@ export default function ProfilePage() {
       formData.append("username", profileData.username);
       formData.append("description", profileData.description);
       formData.append("profilePicture", profileData.profilePicture);
-      console.log(profileData);
-      console.log(formData);
       const response = await fetch("http://localhost:3000/api/user/update-profile", {
         method: "POST",
         credentials: "include",
@@ -45,6 +43,7 @@ export default function ProfilePage() {
         const data = await response.json();
         setProfileData({ ...profileData, profilePictureUrl: data.profilePictureUrl });
         setIsEditing(false);
+        window.location.reload();
       } else {
         throw new Error("Failed to update profile");
       }
@@ -65,7 +64,7 @@ export default function ProfilePage() {
             {isEditing ? (
               <input type="file" accept="image/*" onChange={(event) => setProfileData({ ...profileData, profilePicture: event.target.files[0] })} />
             ) : (
-              <img src={profileData.profilePictureUrl || "/assets/circle.svg"} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
+              <img src={profileData.profilePictureUrl || "/assets/circle.svg"} alt="Profile" />
             )}
             {isEditing ? (
               <input
