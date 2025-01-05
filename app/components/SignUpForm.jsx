@@ -1,21 +1,35 @@
 "use client";
 import { useState } from "react";
+import { signup } from "../firebase";
+import { validateEmail, validatePassword } from "../validation";
 
 export default function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
-  }
+
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
+
+    setErrors({ email: emailError, password: passwordError });
+    if (emailError || passwordError) {
+      return;
+    }
+
+    await signup(email, password);
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <label htmlFor="email">Email</label>
       <input type="email" id="email" name="email" required onChange={(e) => setEmail(e.target.value)} />
+      {errors.email && <p>{errors.email}</p>}
       <label htmlFor="password">Password</label>
       <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
+      {errors.password && <p>{errors.password}</p>}
       <button type="submit">Sign Up</button>
     </form>
   );
