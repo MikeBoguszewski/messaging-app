@@ -2,10 +2,13 @@
 import { useState } from "react";
 import { login } from "../firebase";
 import { validateEmail, validatePassword } from "../validation";
+import { useRouter } from "next/navigation";
+
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +23,7 @@ export default function LoginForm() {
     }
 
     await login(email, password);
+    router.push("/messages");
   };
 
   return (

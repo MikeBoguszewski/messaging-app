@@ -2,11 +2,13 @@
 import { useState } from "react";
 import { signup } from "../firebase";
 import { validateEmail, validatePassword } from "../validation";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ export default function SignupForm() {
     }
 
     await signup(email, password);
+    router.push("/messages");
   };
 
   return (
