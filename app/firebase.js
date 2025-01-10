@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -41,3 +41,16 @@ export async function login(email, password) {
     console.error("Error:", errorCode, errorMessage);
   }
 }
+
+// Sign out the current user
+export async function signout() {
+  try {
+    await signOut(auth);
+    console.log("Signed out");
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error("Error ", errorCode, errorMessage);
+  }
+}
+
