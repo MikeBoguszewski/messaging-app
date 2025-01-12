@@ -1,28 +1,24 @@
 "use client";
 import { useState } from "react";
 import { login } from "../firebase";
-import { validateEmail, validatePassword } from "../validation";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
+    const error = await login(email, password);
 
-    setErrors({ email: emailError, password: passwordError });
-
-    if (emailError || passwordError) {
+    if (error) {
+      setError(error);
       return;
     }
-
-    await login(email, password);
+    
     router.push("/messages");
   };
 
@@ -30,10 +26,9 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} noValidate>
       <label htmlFor="email">Email</label>
       <input type="email" id="email" name="email" required onChange={(e) => setEmail(e.target.value)} />
-      {errors.email && <p>{errors.email}</p>}
       <label htmlFor="password">Password</label>
       <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
-      {errors.password && <p>{errors.password}</p>}
+      {error && <p>{error}</p>}
       <button type="submit">Log In</button>
     </form>
   );
