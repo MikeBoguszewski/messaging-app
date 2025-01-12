@@ -3,6 +3,7 @@ import { useState } from "react";
 import { signup } from "../firebase";
 import { validateEmail, validatePassword } from "../validation";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignupForm() {
   const [email, setEmail] = useState("");
@@ -34,6 +35,9 @@ export default function SignupForm() {
       <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
       {errors.password && <p>{errors.password}</p>}
       <button type="submit">Sign Up</button>
+      <span>
+        Already have an account? <Link href={"/login"}>Log In.</Link>
+      </span>
     </form>
   );
 }

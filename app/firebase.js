@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInAnonymously } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -35,7 +35,7 @@ export async function login(email, password) {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     console.log("Logged in:", user);
-    return null; 
+    return null;
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -44,7 +44,7 @@ export async function login(email, password) {
 
     let errorResponse = "";
 
-switch (error.code) {
+    switch (error.code) {
       case "auth/invalid-credential":
         errorResponse = "Invalid credentials provided. Check your email and password.";
         break;
@@ -66,7 +66,7 @@ switch (error.code) {
         break;
     }
 
-    return errorResponse; 
+    return errorResponse;
   }
 }
 
@@ -82,3 +82,16 @@ export async function signout() {
   }
 }
 
+// Sign in anonymously
+export async function anonymousLogin() {
+  const auth = getAuth();
+  try {
+    const userCredential = await signInAnonymously(auth);
+    const user = userCredential.user;
+    console.log("Logged in:", user);
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error("Error ", errorCode, errorMessage);
+  }
+}

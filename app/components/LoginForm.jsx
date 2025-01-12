@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { login } from "../firebase";
+import { anonymousLogin, login } from "../firebase";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -13,12 +14,16 @@ export default function LoginForm() {
     e.preventDefault();
 
     const error = await login(email, password);
-
     if (error) {
       setError(error);
       return;
     }
-    
+
+    router.push("/messages");
+  };
+
+  const handleAnonymousLogin = async () => {
+    await anonymousLogin();
     router.push("/messages");
   };
 
@@ -30,6 +35,12 @@ export default function LoginForm() {
       <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
       {error && <p>{error}</p>}
       <button type="submit">Log In</button>
+      <button type="button" onClick={handleAnonymousLogin}>
+        Demo Account
+      </button>
+      <span>
+        Don't have an account? <Link href={"/signup"}>Sign Up.</Link>
+      </span>
     </form>
   );
 }
