@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInAnonymously } from "firebase/auth";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -93,5 +94,29 @@ export async function anonymousLogin() {
     const errorCode = error.code;
     const errorMessage = error.message;
     console.error("Error ", errorCode, errorMessage);
+  }
+}
+
+// Connect to Firestore Database
+const db = getFirestore();
+
+// Fetch Firestore data for the logged in user
+export async function fetchCurrentUserData() {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return;
+    }
+    const userId = user.uid;
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      console.log("User data:", userDocSnap.data());
+    } else {
+      console.log("No user data found.");
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
