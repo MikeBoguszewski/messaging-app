@@ -120,3 +120,32 @@ export async function fetchCurrentUserData() {
     console.log(error);
   }
 }
+
+// Fetch Firestore data for conversations
+export async function fetchConversations() {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("No user is currently signed in.");
+      return;
+    }
+
+    const userId = user.uid;
+    console.log("User ID:", userId);
+
+    const conversationsRef = collection(db, "conversations");
+    const q = query(conversationsRef, where("userIds", "array-contains", userId));
+    const conversationsSnap = await getDocs(q);
+
+    if (conversationsSnap.empty) {
+      console.log("No conversations found.");
+    }
+
+    conversationsSnap.forEach((doc) => {
+      console.log("Document ID:", doc.id);
+      console.log("Document Data:", doc.data());
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
