@@ -145,6 +145,18 @@ export async function fetchConversations() {
       console.log("Document ID:", doc.id);
       console.log("Document Data:", doc.data());
     });
+
+    const conversations = conversationsSnap.docs.map((doc) => {
+      const data = doc.data();
+      const otherUserId = data.userIds.filter((id) => id !== userId)[0];
+      return {
+        id: doc.id,
+        ...data,
+        title: otherUserId,
+      };
+    });
+    console.log(conversations);
+    return conversations;
   } catch (error) {
     console.error(error);
   }

@@ -3,7 +3,7 @@ import SignoutButton from "../components/SignoutButton";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../AuthContext";
-import { fetchConversations } from "../firebase";
+import Sidebar from "../components/Sidebar";
 
 export default function MessagesPage() {
   const { user } = useAuth();
@@ -13,16 +13,11 @@ export default function MessagesPage() {
       router.push("/login");
     }
   }, [user]);
-  useEffect(() => {
-    async function fetchData() {
-      await fetchConversations();
-    }
-    fetchData();
-  }, []);
 
   return (
     <div>
       <h1>Messages</h1>
+      <Sidebar />
       <SignoutButton />
     </div>
   );
