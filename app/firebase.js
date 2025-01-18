@@ -161,3 +161,33 @@ export async function fetchConversations() {
     console.error(error);
   }
 }
+
+// Fetch Firestore data for messages
+export async function fetchMessages(conversation) {
+  console.log(conversation.id);
+  try {
+    const messagesRef = collection(db, "conversations", conversation.id, "messages");
+    const messagesSnap = await getDocs(messagesRef);
+
+    if (messagesSnap.empty) {
+      console.log("No messages found.");
+    }
+
+    messagesSnap.forEach((doc) => {
+      console.log("Document ID:", doc.id);
+      console.log("Document Data:", doc.data());
+    });
+
+    const messages = messagesSnap.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
+
+    console.log(messages);
+    return messages;
+  } catch (error) {
+    console.error(error);
+  }
+}
