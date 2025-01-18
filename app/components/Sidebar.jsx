@@ -1,17 +1,6 @@
 "use client";
-import { useState } from "react";
-import { useEffect } from "react";
-import { fetchConversations } from "../firebase";
 
-export default function Sidebar() {
-  const [conversations, setConversations] = useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      const conversations = await fetchConversations();
-      setConversations(conversations);
-    }
-    fetchData();
-  }, []);
+export default function Sidebar({ conversations }) {
   return (
     <div>
       <ul>
