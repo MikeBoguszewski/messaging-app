@@ -1,6 +1,5 @@
 "use client";
-
-export default function Sidebar({ conversations }) {
+export default function Sidebar({ conversations = [] }) {
   return (
     <div>
       <ul>

@@ -2,10 +2,10 @@
 import SignoutButton from "../components/SignoutButton";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../AuthContext";
-import Sidebar from "../components/Sidebar";
-import { fetchConversations } from "../firebase";
-import ChatWindow from "../components/ChatWindow";
+import { useAuth } from "@/AuthContext";
+import Sidebar from "@/components/Sidebar";
+import { fetchConversations } from "@/firebase";
+import ChatWindow from "@/components/ChatWindow";
 
 export default function MessagesPage() {
   const { user } = useAuth();
@@ -17,13 +17,13 @@ export default function MessagesPage() {
     }
   }, [user]);
 
-
   // TODO: Add server side rendering props
   const [conversations, setConversations] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const conversations = await fetchConversations();
       setConversations(conversations);
+      console.log(conversations);
       setLoading(false);
     }
     fetchData();

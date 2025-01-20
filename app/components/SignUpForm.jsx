@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { signup } from "../firebase";
-import { validateEmail, validatePassword } from "../validation";
+import { signup } from "@/firebase";
+import { validateEmail, validatePassword } from "@/validation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

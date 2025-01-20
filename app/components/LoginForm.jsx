@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { anonymousLogin, login } from "../firebase";
+import { anonymousLogin, login } from "@/firebase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

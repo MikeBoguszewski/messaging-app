@@ -164,7 +164,6 @@ export async function fetchConversations() {
 
 // Fetch Firestore data for messages
 export async function fetchMessages(conversation) {
-  console.log(conversation.id);
   try {
     const messagesRef = collection(db, "conversations", conversation.id, "messages");
     const messagesSnap = await getDocs(messagesRef);
@@ -191,3 +190,5 @@ export async function fetchMessages(conversation) {
     console.error(error);
   }
 }
+
+// TODO: live updates for messages and conversations
