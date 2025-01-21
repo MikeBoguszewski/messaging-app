@@ -8,14 +8,14 @@ import { fetchConversations } from "@/firebase";
 import ChatWindow from "@/components/ChatWindow";
 
 export default function MessagesPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       router.push("/login");
     }
-  }, [user]);
+  }, [user, loading]);
 
   // TODO: Add server side rendering props
   const [conversations, setConversations] = useState([]);
@@ -24,12 +24,12 @@ export default function MessagesPage() {
       const conversations = await fetchConversations();
       setConversations(conversations);
       console.log(conversations);
-      setLoading(false);
+      setDataLoading(false);
     }
     fetchData();
-  }, []);
+  }, [loading]);
 
-  if (loading) {
+  if (dataLoading) {
     return <div>Loading...</div>;
   }
 

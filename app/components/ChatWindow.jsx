@@ -14,7 +14,7 @@ export default function ChatWindow({ conversations }) {
       setMessages(messages);
     }
     fetchData();
-  }, []);
+  }, [conversations]);
   return (
     <div>
       <h2>Chat Window</h2>
