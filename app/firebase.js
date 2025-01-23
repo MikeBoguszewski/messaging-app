@@ -127,7 +127,7 @@ export async function fetchConversations() {
     const user = auth.currentUser;
     if (!user) {
       console.log("No user is currently signed in.");
-      return;
+      return [];
     }
 
     const userId = user.uid;
@@ -139,6 +139,7 @@ export async function fetchConversations() {
 
     if (conversationsSnap.empty) {
       console.log("No conversations found.");
+      return [];
     }
 
     conversationsSnap.forEach((doc) => {
@@ -155,10 +156,10 @@ export async function fetchConversations() {
         title: otherUserId,
       };
     });
-    console.log(conversations);
     return conversations;
   } catch (error) {
     console.error(error);
+    return [];
   }
 }
 
