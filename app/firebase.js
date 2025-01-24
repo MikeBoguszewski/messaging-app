@@ -192,4 +192,21 @@ export async function fetchMessages(conversation) {
   }
 }
 
+// Create Conversation in Firebase
+export async function createConversation(otherUserId) {
+  const userId = user.uid;
+  try {
+    user = auth.currentUser;
+    const conversationsRef = collection(db, "conversations");
+    const newConversationRef = doc(conversationsRef);
+    await setDoc(newConversationRef, {
+      userIds: [userId, otherUserId],
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// TODO: Create Message in Firebase
+
 // TODO: live updates for messages and conversations
