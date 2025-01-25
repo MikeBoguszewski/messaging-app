@@ -194,14 +194,39 @@ export async function fetchMessages(conversation) {
 
 // Create Conversation in Firebase
 export async function createConversation(otherUserId) {
+  user = auth.currentUser;
   const userId = user.uid;
   try {
-    user = auth.currentUser;
     const conversationsRef = collection(db, "conversations");
     const newConversationRef = doc(conversationsRef);
     await setDoc(newConversationRef, {
       userIds: [userId, otherUserId],
     });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Fetch users from Firebase
+export async function fetchUsersExcludingCurrent() {
+  const user = auth.currentUser;
+  const userId = user.uid;
+  try {
+    const usersRef = collection(db, "users");
+    const usersSnap = await getDocs(usersRef);
+    console.log(userId);
+    console.log(usersSnap.docs);
+    const users = usersSnap.docs
+      .filter((doc) => doc.id !== userId)
+      .map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+
+    console.log(users);
+    return users;
   } catch (error) {
     console.error(error);
   }
