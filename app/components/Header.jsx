@@ -9,7 +9,7 @@ export default function Header({ user }) {
       <h1>Hello, {user?.email ? user.email : "Anonymous"}</h1>
       <button onClick={() => setIsModalOpen(true)}>New Conversation</button>
       <ConversationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ConversationForm />
+        <ConversationForm onSubmit={() => setIsModalOpen(false)} />
       </ConversationModal>
     </header>
   );

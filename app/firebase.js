@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInAnonymously } from "firebase/auth";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -194,7 +194,7 @@ export async function fetchMessages(conversation) {
 
 // Create Conversation in Firebase
 export async function createConversation(otherUserId) {
-  user = auth.currentUser;
+  const user = auth.currentUser;
   const userId = user.uid;
   try {
     const conversationsRef = collection(db, "conversations");
