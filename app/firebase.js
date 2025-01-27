@@ -232,6 +232,20 @@ export async function fetchUsersExcludingCurrent() {
   }
 }
 
-// TODO: Create Message in Firebase
+// Create message in firebase
+export async function createMessage(conversationId, text) {
+    const user = auth.currentUser;
+    const userId = user.uid;
+  try {
+    const messagesRef = collection(db, "conversations", conversationId, "messages");
+    await addDoc(messagesRef, {
+      senderId: userId,
+      text: text,
+      timestamp: Date.now(),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // TODO: live updates for messages and conversations
