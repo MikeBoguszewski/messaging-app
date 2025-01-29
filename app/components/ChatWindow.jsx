@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { fetchMessages, fetchConversations } from "@/firebase";
+import MessageInput from "./MessageInput";
 
 export default function ChatWindow({ conversationId }) {
   const [dataLoading, setDataLoading] = useState(true);
@@ -41,6 +42,7 @@ export default function ChatWindow({ conversationId }) {
   return (
     <div>
       <ul>{messages && messages.map((message) => <li key={message.id}>{message.text}</li>)}</ul>
+      <MessageInput conversationId={conversationId} />
     </div>
   );
 }
