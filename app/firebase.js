@@ -12,6 +12,14 @@ const firebaseConfig = {
   appId: "1:464429347729:web:2851dbfc0f9fffbb162030",
 };
 
+// test user
+// alice@messagingapp.com
+// password
+
+// test user 
+// bob@messagingapp.com
+// password
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -23,6 +31,9 @@ export async function signup(email, password) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     console.log("Signed up:", user);
+    await setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+    });
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
