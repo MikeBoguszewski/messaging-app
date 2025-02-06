@@ -27,16 +27,30 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <label htmlFor="email">Email</label>
-      <input type="email" id="email" name="email" required onChange={(e) => setEmail(e.target.value)} />
-      {errors.email && <p>{errors.email}</p>}
-      <label htmlFor="password">Password</label>
-      <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
-      {errors.password && <p>{errors.password}</p>}
-      <button type="submit">Sign Up</button>
-      <span>
-        Already have an account? <Link href={"/login"}>Log In.</Link>
+    <form onSubmit={handleSubmit} noValidate className="bg-federal-blue p-14 rounded-2xl shadow-2xl flex flex-col md:w-96">
+      <h1 className="font-bold text-4xl mb-8">Signup</h1>
+      <div className="flex flex-col mb-4">
+        <label htmlFor="email" className="font-bold">
+          Email
+        </label>
+        <input type="email" id="email" name="email" required onChange={(e) => setEmail(e.target.value)} className="rounded-md bg-inherit shadow-md border border-white p-1 outline-non-photo-blue mb-3" />
+        {errors.email && <p>{errors.email}</p>}
+      </div>
+      <div className="flex flex-col mb-4">
+        <label htmlFor="password" className="font-bold">
+          Password
+        </label>
+        <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} className="rounded-md bg-inherit shadow-md border border-white p-1 outline-non-photo-blue mb-3" />
+        {errors.password && <p>{errors.password}</p>}
+      </div>
+      <button type="submit" className="font-bold block bg-pacific-cyan flex-grow rounded-md shadow-md p-2 mb-3 hover:bg-vivid-sky-blue">
+        Sign Up
+      </button>
+      <span className="block">
+        Already have an account?{" "}
+        <Link href={"/login"} className="font-bold hover:underline">
+          Log In.
+        </Link>
       </span>
     </form>
   );
