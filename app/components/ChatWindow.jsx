@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { fetchMessages, fetchConversations } from "@/firebase";
 import MessageInput from "./MessageInput";
+import ChatBox from "./ChatBox";
 
-export default function ChatWindow({ conversationId }) {
+export default function ChatWindow({ conversationId, user }) {
   const [dataLoading, setDataLoading] = useState(true);
   const [conversation, setConversation] = useState();
   const [messages, setMessages] = useState([]);
@@ -14,6 +15,7 @@ export default function ChatWindow({ conversationId }) {
       // Fetch conversations
       const conversations = await fetchConversations();
       console.log("Conversations:", conversations);
+      if (!conversationId) setConversation[0];
 
       // Find the conversation based on the conversationId prop
       const conversation = conversations.find((conv) => conv.id == conversationId);
@@ -30,19 +32,19 @@ export default function ChatWindow({ conversationId }) {
       setDataLoading(false);
     }
 
-    if (conversationId) {
-      fetchData();
-    }
+    fetchData();
   }, [conversationId]);
 
   if (dataLoading) {
-    return <div>Select a Conversation!</div>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      <ul>{messages && messages.map((message) => <li key={message.id}>{message.text}</li>)}</ul>
-      <MessageInput conversationId={conversationId} />
+    <div className="w-full h-full flex flex-col">
+      <ul className="p-5 flex flex-col overflow-y-scroll flex-grow max-h-full">{messages && messages.map((message) => <ChatBox key={message.id} message={message} user={user} />)}</ul>
+      <div className="flex w-full mt-auto">
+        <MessageInput conversationId={conversationId} />
+      </div>
     </div>
   );
 }

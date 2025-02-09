@@ -5,10 +5,9 @@ import { useAuth } from "@/AuthContext";
 import Sidebar from "@/components/Sidebar";
 import { fetchConversations } from "@/firebase";
 import Header from "../components/Header";
-import SignoutButton from "../components/SignoutButton";
 import ChatWindow from "../components/ChatWindow";
 
-export default function MessagesLayout({ children }) {
+export default function MessagesPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [dataLoading, setDataLoading] = useState(true);
@@ -37,13 +36,12 @@ export default function MessagesLayout({ children }) {
   }
 
   return (
-    <div>
-      <h1>Messages</h1>
+    <div className="flex flex-col h-screen">
       <Header user={user} />
-      <Sidebar conversations={conversations} setConversationId={setConversationId}/>
-      <ChatWindow conversationId={conversationId}/>
-      <SignoutButton />
-      {children}
+      <div className="flex flex-1">
+        <Sidebar conversations={conversations} setConversationId={setConversationId} conversationId={conversationId} />
+        <ChatWindow conversationId={conversationId} user={user} />
+      </div>
     </div>
   );
 }

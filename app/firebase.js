@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInAnonymously } from "firebase/auth";
 import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, addDoc } from "firebase/firestore";
+import { use } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -158,20 +159,33 @@ export async function fetchConversations() {
       console.log("Document Data:", doc.data());
     });
 
-    const conversations = conversationsSnap.docs.map((doc) => {
+    // Prepare data for rendering
+    const conversations = await Promise.all(conversationsSnap.docs.map(async (doc) => {
       const data = doc.data();
       const otherUserId = data.userIds.filter((id) => id !== userId)[0];
+      const otherUserSnap = await fetchUser(otherUserId);
+      const name = otherUserSnap.data().email.split("@")[0];
+      const otherUserName = name.charAt(0).toUpperCase() + name.slice(1);
+
       return {
         id: doc.id,
         ...data,
-        title: otherUserId,
+        otherUserId: otherUserId,
+        otherUserName: otherUserName,
       };
-    });
+    })
+  );
     return conversations;
   } catch (error) {
     console.error(error);
     return [];
   }
+}
+
+export async function fetchUser(userId) {
+  const userDocRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userDocRef);
+  return userSnap;
 }
 
 // Fetch Firestore data for messages
