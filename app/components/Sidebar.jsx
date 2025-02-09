@@ -1,19 +1,11 @@
 "use client";
 import SignoutButton from "../components/SignoutButton";
-import Image from "next/image";
-import { useState } from "react";
 
-export default function Sidebar({ conversations = [], setConversationId, conversationId }) {
-  const [isVisible, setIsVisible] = useState(false);
+export default function Sidebar({ conversations = [], setConversationId, conversationId, sidebar }) {
   return (
-    <div className="flex flex-col bg-federal-blue p-4 w-full md:w-96">
-      <div className="flex justify-between items-center">
-        <h2 className="font-bold text-xl">Conversations</h2>
-        <button className="md:hidden" onClick={() => setIsVisible(!isVisible)}>
-          <Image src="/menu.svg" alt="Menu" width={40} height={40} />
-        </button>
-      </div>
-      <ul className="flex flex-col gap-2 border-t-2 p-3">
+    <div className={`md:flex flex-col bg-federal-blue p-4 md:w-96 ${sidebar ? "w-full" : "hidden"}`}>
+        <h2 className="font-bold text-xl text-center mb-2">Conversations</h2>
+      <ul className="flex flex-col gap-2 border-t-2 p-3 overflow-y-auto">
         {conversations.length === 0 && <li>No conversations</li>}
         {conversations.map((conversation) => (
           <li key={conversation.id} className="flex flex-col justify-start">

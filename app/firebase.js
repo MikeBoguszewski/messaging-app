@@ -102,6 +102,9 @@ export async function anonymousLogin() {
     const userCredential = await signInAnonymously(auth);
     const user = userCredential.user;
     console.log("Logged in:", user);
+    await setDoc(doc(db, "users", user.uid), {
+      anonymous: true,
+    });
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -164,8 +167,12 @@ export async function fetchConversations() {
       const data = doc.data();
       const otherUserId = data.userIds.filter((id) => id !== userId)[0];
       const otherUserSnap = await fetchUser(otherUserId);
-      const name = otherUserSnap.data().email.split("@")[0];
-      const otherUserName = name.charAt(0).toUpperCase() + name.slice(1);
+      let otherUserName = "Anonymous";
+      if (otherUserSnap.anonymous == undefined) {
+        const name = otherUserSnap.data()?.email.split("@")[0];
+        if (name) otherUserName = name.charAt(0).toUpperCase() + name?.slice(1);
+      }
+      
 
       return {
         id: doc.id,
@@ -183,6 +190,7 @@ export async function fetchConversations() {
 }
 
 export async function fetchUser(userId) {
+  console.log("Fetching user with ID:", userId);
   const userDocRef = doc(db, "users", userId);
   const userSnap = await getDoc(userDocRef);
   return userSnap;

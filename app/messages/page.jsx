@@ -12,6 +12,7 @@ export default function MessagesPage() {
   const router = useRouter();
   const [dataLoading, setDataLoading] = useState(true);
   const [conversationId, setConversationId] = useState(null);
+  const [sidebar, setSidebar] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -37,10 +38,10 @@ export default function MessagesPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header user={user} />
+      <Header user={user} setSidebar={setSidebar} sidebar={sidebar} setConversationId={setConversationId} />
       <div className="flex flex-1">
-        <Sidebar conversations={conversations} setConversationId={setConversationId} conversationId={conversationId} />
-        <ChatWindow conversationId={conversationId} user={user} />
+        <Sidebar conversations={conversations} setConversationId={setConversationId} conversationId={conversationId} sidebar={sidebar} />
+        <ChatWindow conversationId={conversationId} user={user} sidebar={sidebar} />
       </div>
     </div>
   );

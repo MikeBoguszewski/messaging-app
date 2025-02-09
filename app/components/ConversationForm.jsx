@@ -2,26 +2,29 @@ import { fetchUsersExcludingCurrent } from "../firebase";
 import { useState, useEffect } from "react";
 import { createConversation } from "../firebase";
 
-export default function ConversationForm({ onSubmit }) {
+export default function ConversationForm({ onSubmit, setConversationId }) {
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUser] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createConversation(selectedUserId);
+    setConversationId(selectedUserId);
     onSubmit();
   };
 
   useEffect(() => {
     async function fetchData() {
-      const users = await fetchUsersExcludingCurrent();
+      let users = await fetchUsersExcludingCurrent();
+      users = users.filter((user) => user.email !== undefined);
       setUsers(users);
     }
     fetchData();
   }, []);
   return (
-    <form onSubmit={handleSubmit}>
-      <select onChange={(e) => setSelectedUser(e.target.value)} defaultValue={""}>
+    <form onSubmit={handleSubmit} className="flex flex-col">
+      <h1 className="font-bold text-4xl mb-8">New Conversation</h1>
+      <select onChange={(e) => setSelectedUser(e.target.value)} defaultValue={""} className="bg-inherit border rounded-md shadow-md p-2 mb-3">
         <option value="" disabled>
           Select a user
         </option>
@@ -31,7 +34,9 @@ export default function ConversationForm({ onSubmit }) {
           </option>
         ))}
       </select>
-      <button type="submit">Submit</button>
+      <button type="submit" className="font-bold block bg-pacific-cyan flex-grow rounded-md shadow-md p-2 mb-3 hover:bg-vivid-sky-blue">
+        Submit
+      </button>
     </form>
   );
 }

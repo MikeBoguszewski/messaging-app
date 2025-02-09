@@ -5,7 +5,7 @@ import { fetchMessages, fetchConversations } from "@/firebase";
 import MessageInput from "./MessageInput";
 import ChatBox from "./ChatBox";
 
-export default function ChatWindow({ conversationId, user }) {
+export default function ChatWindow({ conversationId, user, sidebar }) {
   const [dataLoading, setDataLoading] = useState(true);
   const [conversation, setConversation] = useState();
   const [messages, setMessages] = useState([]);
@@ -35,13 +35,13 @@ export default function ChatWindow({ conversationId, user }) {
     fetchData();
   }, [conversationId]);
 
-  if (dataLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (dataLoading) {
+  //   return <div className="flex w-full h-full justify-center items-center font-bold text-3xl">Send a Message to Someone!</div>;
+  // }
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <ul className="p-5 flex flex-col overflow-y-scroll flex-grow max-h-full">{messages && messages.map((message) => <ChatBox key={message.id} message={message} user={user} />)}</ul>
+    <div className={`h-full flex flex-col overflow-scroll w-full ${sidebar ? "invisible w-0" : ""}`}>
+      <ul className="p-5 flex flex-1 flex-col overflow-y-scroll w-full">{messages && messages.map((message) => <ChatBox key={message.id} message={message} user={user} />)}</ul>
       <div className="flex w-full mt-auto">
         <MessageInput conversationId={conversationId} />
       </div>
