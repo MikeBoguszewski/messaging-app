@@ -34,13 +34,13 @@ export default function LoginForm() {
         <label htmlFor="email" className="font-bold">
           Email
         </label>
-        <input type="email" id="email" name="email" required onChange={(e) => setEmail(e.target.value)} className="rounded-md bg-inherit shadow-md border border-white p-1 outline-non-photo-blue mb-3" />
+        <input type="email" id="email" name="email" required onChange={(e) => setEmail(e.target.value)} value={email} className="rounded-md bg-inherit shadow-md border border-white p-1 outline-non-photo-blue mb-3" />
       </div>
       <div className="flex flex-col mb-4">
         <label htmlFor="password" className="font-bold">
           Password
         </label>
-        <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)} className="rounded-md bg-inherit shadow-md border border-white p-1 outline-non-photo-blue mb-3" />
+        <input type="password" id="password" name="password" required onChange={(e) => setPassword(e.target.value)}  value={password} className="rounded-md bg-inherit shadow-md border border-white p-1 outline-non-photo-blue mb-3" />
         {error && <p>{error}</p>}
       </div>
       <button type="submit" className="font-bold block bg-pacific-cyan flex-grow rounded-md shadow-md p-2 mb-3 hover:bg-vivid-sky-blue">

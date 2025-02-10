@@ -37,9 +37,9 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen box-border">
       <Header user={user} setSidebar={setSidebar} sidebar={sidebar} setConversationId={setConversationId} />
-      <div className="flex flex-1">
+      <div className="flex flex-1 h-11/12">
         <Sidebar conversations={conversations} setConversationId={setConversationId} conversationId={conversationId} sidebar={sidebar} />
         <ChatWindow conversationId={conversationId} user={user} sidebar={sidebar} />
       </div>

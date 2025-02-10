@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { fetchMessages, fetchConversations } from "@/firebase";
 import MessageInput from "./MessageInput";
@@ -40,11 +40,21 @@ export default function ChatWindow({ conversationId, user, sidebar }) {
   // }
 
   return (
-    <div className={`h-full flex flex-col overflow-scroll w-full ${sidebar ? "invisible w-0" : ""}`}>
-      <ul className="p-5 flex flex-1 flex-col overflow-y-scroll w-full">{messages && messages.map((message) => <ChatBox key={message.id} message={message} user={user} />)}</ul>
-      <div className="flex w-full mt-auto">
-        <MessageInput conversationId={conversationId} />
-      </div>
+    <div className={`flex flex-col sm:w-full sm:visible ${sidebar ? "invisible w-0" : "w-full visible"}`}>
+      <ul className={`p-5 flex flex-auto flex-col overflow-y-scroll w-full h-96 ${!conversationId && "justify-center"}`}>
+        {messages && messages.map((message) => <ChatBox key={message.id} message={message} user={user} />)}
+        {!conversationId && (
+          <li className="flex w-full justify-center items-center font-bold text-3xl flex-col text-center">
+            <Image src="/logo.svg" alt="Send" width={100} height={100} className="pb-3" />
+            <span>Send a message to someone!</span>
+          </li>
+        )}
+      </ul>
+      {conversationId && (
+        <div className="flex w-full mt-auto">
+          <MessageInput conversationId={conversationId} />
+        </div>
+      )}
     </div>
   );
 }

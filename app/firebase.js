@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInAnonymously } from "firebase/auth";
 import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, addDoc } from "firebase/firestore";
-import { use } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -167,8 +166,9 @@ export async function fetchConversations() {
       const data = doc.data();
       const otherUserId = data.userIds.filter((id) => id !== userId)[0];
       const otherUserSnap = await fetchUser(otherUserId);
+      console.log("Other user snap:", otherUserSnap.data().anonymous);
       let otherUserName = "Anonymous";
-      if (otherUserSnap.anonymous == undefined) {
+      if (otherUserSnap.data().anonymous === undefined) {
         const name = otherUserSnap.data()?.email.split("@")[0];
         if (name) otherUserName = name.charAt(0).toUpperCase() + name?.slice(1);
       }
@@ -219,7 +219,7 @@ export async function fetchMessages(conversation) {
     });
 
     console.log(messages);
-    return messages;
+    return messages.sort((a, b) => a.timestamp - b.timestamp);
   } catch (error) {
     console.error(error);
   }
