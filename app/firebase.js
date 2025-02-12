@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInAnonymously } from "firebase/auth";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, addDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, addDoc, onSnapshot } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,7 +16,7 @@ const firebaseConfig = {
 // alice@messagingapp.com
 // password
 
-// test user 
+// test user
 // bob@messagingapp.com
 // password
 
@@ -136,57 +136,77 @@ export async function fetchCurrentUserData() {
 }
 
 // Fetch Firestore data for conversations
-export async function fetchConversations() {
+export function listenForConversations(setConversationsDocs) {
   try {
     const user = auth.currentUser;
     if (!user) {
       console.log("No user is currently signed in.");
-      return [];
+      setConversationsDocs([]);
+      return () => {};
     }
 
     const userId = user.uid;
-    console.log("User ID:", userId);
-
     const conversationsRef = collection(db, "conversations");
     const q = query(conversationsRef, where("userIds", "array-contains", userId));
-    const conversationsSnap = await getDocs(q);
 
-    if (conversationsSnap.empty) {
-      console.log("No conversations found.");
-      return [];
-    }
-
-    conversationsSnap.forEach((doc) => {
-      console.log("Document ID:", doc.id);
-      console.log("Document Data:", doc.data());
-    });
-
-    // Prepare data for rendering
-    const conversations = await Promise.all(conversationsSnap.docs.map(async (doc) => {
-      const data = doc.data();
-      const otherUserId = data.userIds.filter((id) => id !== userId)[0];
-      const otherUserSnap = await fetchUser(otherUserId);
-      console.log("Other user snap:", otherUserSnap.data().anonymous);
-      let otherUserName = "Anonymous";
-      if (otherUserSnap.data().anonymous === undefined) {
-        const name = otherUserSnap.data()?.email.split("@")[0];
-        if (name) otherUserName = name.charAt(0).toUpperCase() + name?.slice(1);
+    // Subscribe to live updates
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      if (snapshot.empty) {
+        console.log("No conversations found.");
+        setConversationsDocs([]);
+        return;
       }
-      
+      console.log("snap", snapshot.docs);
+      setConversationsDocs(snapshot.docs);
+    });
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error in listenForConversations:", error);
+    setConversationsDocs([]);
+    return () => {};
+  }
+}
+
+export async function filterConversations(docs) {
+  console.log("filer me", docs);
+  const user = auth.currentUser;
+  const userId = user.uid;
+  // Process all documents in parallel
+
+  const conversationsPromises = await docs.map(async (doc) => {
+    const data = doc.data();
+    const otherUserId = data.userIds.find((id) => id !== userId);
+
+    try {
+      const otherUserSnap = await fetchUser(otherUserId);
+      const otherUserData = otherUserSnap.data();
+
+      let otherUserName = "Anonymous";
+      if (otherUserData?.anonymous === undefined && otherUserData?.email) {
+        const name = otherUserData.email.split("@")[0];
+        otherUserName = name.charAt(0).toUpperCase() + name.slice(1);
+      }
 
       return {
         id: doc.id,
         ...data,
-        otherUserId: otherUserId,
-        otherUserName: otherUserName,
+        otherUserId,
+        otherUserName,
       };
-    })
-  );
-    return conversations;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+    } catch (error) {
+      console.error(`Error fetching user ${otherUserId}:`, error);
+      return {
+        id: doc.id,
+        ...data,
+        otherUserId,
+        otherUserName: "Unknown User",
+      };
+    }
+  });
+
+  // Wait for all promises to resolve
+  const conversations = await Promise.all(conversationsPromises);
+  return conversations;
 }
 
 export async function fetchUser(userId) {
@@ -197,31 +217,35 @@ export async function fetchUser(userId) {
 }
 
 // Fetch Firestore data for messages
-export async function fetchMessages(conversation) {
+export function listenForMessages(setMessages, conversation) {
   try {
     const messagesRef = collection(db, "conversations", conversation.id, "messages");
-    const messagesSnap = await getDocs(messagesRef);
+    // const messagesSnap = await getDocs(messagesRef);
 
-    if (messagesSnap.empty) {
-      console.log("No messages found.");
-    }
+    const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
+      if (snapshot.empty) {
+        console.log("No messages found.");
+      }
 
-    messagesSnap.forEach((doc) => {
-      console.log("Document ID:", doc.id);
-      console.log("Document Data:", doc.data());
+      snapshot.forEach((doc) => {
+        console.log("Document ID:", doc.id);
+        console.log("Document Data:", doc.data());
+      });
+
+      const messages = snapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+
+      console.log(messages);
+      setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
     });
-
-    const messages = messagesSnap.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      };
-    });
-
-    console.log(messages);
-    return messages.sort((a, b) => a.timestamp - b.timestamp);
+    return unsubscribe;
   } catch (error) {
     console.error(error);
+    return () => {};
   }
 }
 
@@ -267,8 +291,8 @@ export async function fetchUsersExcludingCurrent() {
 
 // Create message in firebase
 export async function createMessage(conversationId, text) {
-    const user = auth.currentUser;
-    const userId = user.uid;
+  const user = auth.currentUser;
+  const userId = user.uid;
   try {
     const messagesRef = collection(db, "conversations", conversationId, "messages");
     await addDoc(messagesRef, {

@@ -1,39 +1,39 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { fetchMessages, fetchConversations } from "@/firebase";
+import { useState, useEffect, useRef } from "react";
+import { listenForMessages } from "@/firebase";
 import MessageInput from "./MessageInput";
 import ChatBox from "./ChatBox";
 
-export default function ChatWindow({ conversationId, user, sidebar }) {
+export default function ChatWindow({ conversationId, user, sidebar, conversations }) {
   const [dataLoading, setDataLoading] = useState(true);
   const [conversation, setConversation] = useState();
   const [messages, setMessages] = useState([]);
+  const unsubscribeRef = useRef(null);
 
   useEffect(() => {
-    async function fetchData() {
-      // Fetch conversations
-      const conversations = await fetchConversations();
-      console.log("Conversations:", conversations);
-      if (!conversationId) setConversation[0];
-
+    if (conversationId) {
       // Find the conversation based on the conversationId prop
-      const conversation = conversations.find((conv) => conv.id == conversationId);
-      setConversation(conversation);
+      const currentConversation = conversations.find((conv) => conv.id == conversationId);
+      setConversation(currentConversation);
       console.log("Current conversation:", conversation);
-
-      // Fetch messages for that conversation
-      if (conversation) {
-        const messages = await fetchMessages(conversation);
-        console.log("Messages:", messages);
-        setMessages(messages);
-      }
-
-      setDataLoading(false);
     }
-
-    fetchData();
   }, [conversationId]);
+  
+
+  useEffect(() => {
+    if (!conversation) return;
+    const unsubscribe = listenForMessages(setMessages, conversation);
+    unsubscribeRef.current = unsubscribe;
+    return () => {
+      if (unsubscribeRef.current) {
+        console.log("Unsubscribing...");
+        unsubscribeRef.current();
+      }
+    };
+  }, [conversation]);
+
+  
 
   // if (dataLoading) {
   //   return <div className="flex w-full h-full justify-center items-center font-bold text-3xl">Send a Message to Someone!</div>;
