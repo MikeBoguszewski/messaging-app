@@ -19,7 +19,7 @@ export default function MessagesPage() {
     if (!loading && !user) {
       router.push("/login");
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   const [conversationsDocs, setConversationsDocs] = useState([]);
   const [conversations, setConversations] = useState([]);
@@ -34,7 +34,7 @@ export default function MessagesPage() {
         unsubscribeRef.current();
       }
     };
-  }, [user]);
+  }, [user, loading]);
 
   useEffect(() => {
     async function fetchData() {
@@ -45,7 +45,7 @@ export default function MessagesPage() {
     }
     fetchData();
     setDataLoading(false);
-  }, [conversationsDocs]);
+  }, [conversationsDocs, loading]);
 
   if (dataLoading) {
     return <div>Loading...</div>;

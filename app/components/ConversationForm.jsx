@@ -4,13 +4,14 @@ import { createConversation } from "../firebase";
 
 export default function ConversationForm({ onSubmit, setConversationId }) {
   const [users, setUsers] = useState([]);
-  const [selectedUserId, setSelectedUser] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const handleSubmit = async (e) => {
-    console.log("submit")
     e.preventDefault();
-    await createConversation(selectedUserId);
-    setConversationId(selectedUserId);
+    console.log("submit")
+    const id = await createConversation(selectedUserId);
+    console.log("id", id)
+    setConversationId(id);
     onSubmit();
   };
 
@@ -25,7 +26,7 @@ export default function ConversationForm({ onSubmit, setConversationId }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col">
       <h1 className="font-bold text-4xl mb-8">New Conversation</h1>
-      <select onChange={(e) => setSelectedUser(e.target.value)} defaultValue={""} className="bg-inherit border rounded-md shadow-md p-2 mb-3">
+      <select onChange={(e) => setSelectedUserId(e.target.value)} defaultValue={""} className="bg-inherit border rounded-md shadow-md p-2 mb-3">
         <option value="" disabled>
           Select a user
         </option>

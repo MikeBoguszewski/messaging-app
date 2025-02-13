@@ -259,6 +259,9 @@ export async function createConversation(otherUserId) {
     await setDoc(newConversationRef, {
       userIds: [userId, otherUserId],
     });
+    const conversationId = newConversationRef.id;
+    return conversationId;
+
   } catch (error) {
     console.error(error);
   }
