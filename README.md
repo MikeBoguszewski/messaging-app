@@ -13,7 +13,7 @@ Users should be able to:
 
 ## **Screenshot**
 
-![App Screenshot](./screenshot.jpg)
+![App Screenshot](./screenshot.png)
 
 ## **Links**
 - Live Demo: https://messaging-app-eta-lake.vercel.app (due to limited resources, the app may take up to a minute to start up)
