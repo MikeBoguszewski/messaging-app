@@ -16,7 +16,6 @@ export default function ChatWindow({ conversationId, user, sidebar, conversation
       // Find the conversation based on the conversationId prop
       const currentConversation = conversations.find((conv) => conv.id == conversationId);
       setConversation(currentConversation);
-      console.log("Current conversation:", conversationId);
     }
   }, [conversationId]);
   
@@ -27,7 +26,6 @@ export default function ChatWindow({ conversationId, user, sidebar, conversation
     unsubscribeRef.current = unsubscribe;
     return () => {
       if (unsubscribeRef.current) {
-        console.log("Unsubscribing...");
         unsubscribeRef.current();
       }
     };

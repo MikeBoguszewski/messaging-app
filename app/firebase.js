@@ -30,7 +30,6 @@ export async function signup(email, password) {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    console.log("Signed up:", user);
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
     });
@@ -46,7 +45,6 @@ export async function login(email, password) {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    console.log("Logged in:", user);
     return null;
   } catch (error) {
     const errorCode = error.code;
@@ -86,7 +84,6 @@ export async function login(email, password) {
 export async function signout() {
   try {
     await signOut(auth);
-    console.log("Signed out");
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -100,7 +97,6 @@ export async function anonymousLogin() {
   try {
     const userCredential = await signInAnonymously(auth);
     const user = userCredential.user;
-    console.log("Logged in:", user);
     await setDoc(doc(db, "users", user.uid), {
       anonymous: true,
     });
@@ -131,7 +127,7 @@ export async function fetchCurrentUserData() {
       console.log("No user data found.");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -140,7 +136,6 @@ export function listenForConversations(setConversationsDocs) {
   try {
     const user = auth.currentUser;
     if (!user) {
-      console.log("No user is currently signed in.");
       setConversationsDocs([]);
       return () => {};
     }
@@ -152,11 +147,9 @@ export function listenForConversations(setConversationsDocs) {
     // Subscribe to live updates
     const unsubscribe = onSnapshot(q, (snapshot) => {
       if (snapshot.empty) {
-        console.log("No conversations found.");
         setConversationsDocs([]);
         return;
       }
-      console.log("snap", snapshot.docs);
       setConversationsDocs(snapshot.docs);
     });
     return unsubscribe;
@@ -168,7 +161,6 @@ export function listenForConversations(setConversationsDocs) {
 }
 
 export async function filterConversations(docs) {
-  console.log("filer me", docs);
   const user = auth.currentUser;
   const userId = user.uid;
   // Process all documents in parallel
@@ -210,7 +202,6 @@ export async function filterConversations(docs) {
 }
 
 export async function fetchUser(userId) {
-  console.log("Fetching user with ID:", userId);
   const userDocRef = doc(db, "users", userId);
   const userSnap = await getDoc(userDocRef);
   return userSnap;
@@ -223,14 +214,6 @@ export function listenForMessages(setMessages, conversation) {
     // const messagesSnap = await getDocs(messagesRef);
 
     const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
-      if (snapshot.empty) {
-        console.log("No messages found.");
-      }
-
-      snapshot.forEach((doc) => {
-        console.log("Document ID:", doc.id);
-        console.log("Document Data:", doc.data());
-      });
 
       const messages = snapshot.docs.map((doc) => {
         return {
@@ -239,7 +222,6 @@ export function listenForMessages(setMessages, conversation) {
         };
       });
 
-      console.log(messages);
       setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
     });
     return unsubscribe;
@@ -274,8 +256,6 @@ export async function fetchUsersExcludingCurrent() {
   try {
     const usersRef = collection(db, "users");
     const usersSnap = await getDocs(usersRef);
-    console.log(userId);
-    console.log(usersSnap.docs);
     const users = usersSnap.docs
       .filter((doc) => doc.id !== userId)
       .map((doc) => {
@@ -285,7 +265,6 @@ export async function fetchUsersExcludingCurrent() {
         };
       });
 
-    console.log(users);
     return users;
   } catch (error) {
     console.error(error);

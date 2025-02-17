@@ -8,9 +8,7 @@ export default function ConversationForm({ onSubmit, setConversationId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit")
     const id = await createConversation(selectedUserId);
-    console.log("id", id)
     setConversationId(id);
     onSubmit();
   };

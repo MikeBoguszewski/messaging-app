@@ -26,11 +26,8 @@ export default function MessagesPage() {
   useEffect(() => {
     const unsubscribe = listenForConversations(setConversationsDocs);
     unsubscribeRef.current = unsubscribe;
-    console.log("Unsubscribe ref:", unsubscribeRef.current);
-    console.log("test", conversationsDocs);
     return () => {
       if (unsubscribeRef.current) {
-        console.log("Unsubscribing...");
         unsubscribeRef.current();
       }
     };
@@ -41,7 +38,6 @@ export default function MessagesPage() {
       if (conversationsDocs.length == 0) return;
       const conversations = await filterConversations(conversationsDocs);
       setConversations(conversations);
-      console.log("test2", conversations);
     }
     fetchData();
     setDataLoading(false);
