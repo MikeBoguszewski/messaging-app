@@ -43,8 +43,7 @@ export async function signup(email, password) {
 /// Log in an existing user
 export async function login(email, password) {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    await signInWithEmailAndPassword(auth, email, password);
     return null;
   } catch (error) {
     const errorCode = error.code;
@@ -214,7 +213,6 @@ export function listenForMessages(setMessages, conversation) {
     // const messagesSnap = await getDocs(messagesRef);
 
     const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
-
       const messages = snapshot.docs.map((doc) => {
         return {
           id: doc.id,
@@ -243,7 +241,6 @@ export async function createConversation(otherUserId) {
     });
     const conversationId = newConversationRef.id;
     return conversationId;
-
   } catch (error) {
     console.error(error);
   }
